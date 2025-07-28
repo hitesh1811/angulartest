@@ -14,6 +14,11 @@ export class TodoList {
   newTask: string = '';
 
   addTask() {
+
+    if(!this.newTask.trim()) {
+       this.newTask = '';
+      return;
+    }
     this.tasks.push(this.newTask);
     this.newTask = '';
   }
