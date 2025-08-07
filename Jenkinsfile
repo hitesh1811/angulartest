@@ -5,6 +5,7 @@ pipeline {
         EC2_HOST = 'ubuntu@3.110.77.112'
         SSH_KEY = 'ec2-key-angular'
         APP_DIR = '/var/www/angulartest'
+        DIST_DIR = 'dist/to-do-list/browser' // or adjust if your build path is different
     }
 
     stages {
@@ -25,7 +26,14 @@ pipeline {
             steps {
                 sshagent (credentials: ["${SSH_KEY}"]) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} 'cd ${APP_DIR} && git pull && npm install && ng build --configuration production && pm2 restart angulartest'
+                        # Clean old files on EC2
+                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} 'rm -rf ${APP_DIR}/dist && mkdir -p ${APP_DIR}/dist'
+                        
+                        # Copy built files from Jenkins to EC2
+                        scp -o StrictHostKeyChecking=no -r ${DIST_DIR}/* ${EC2_HOST}:${APP_DIR}/dist
+                        
+                        # Restart PM2 to serve the new build
+                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} 'pm2 restart angulartest || pm2 serve ${APP_DIR}/dist 3000 --spa --name angulartest'
                     """
                 }
             }
@@ -34,10 +42,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment Successful!'
+            echo '✅ Deployment Successful!'
         }
         failure {
-            echo 'Deployment Failed!'
+            echo '❌ Deployment Failed!'
         }
     }
 }
