@@ -18,7 +18,7 @@ pipeline {
         stage('Build Angular') {
             steps {
                 sh 'npm install'
-                sh 'ng build --configuration production'
+                sh 'npx ng build --configuration production'
             }
         }
 
