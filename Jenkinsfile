@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         EC2_HOST = 'ubuntu@your-ec2-ip'
-        SSH_KEY = 'ec2-key'
+        SSH_KEY = 'ec2-key-angular'
         APP_DIR = '/var/www/angulartest'
     }
 
