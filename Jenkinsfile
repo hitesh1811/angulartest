@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_HOST = 'ubuntu@your-ec2-ip'
+        EC2_HOST = 'ubuntu@3.110.77.112'
         SSH_KEY = 'ec2-key-angular'
         APP_DIR = '/var/www/angulartest'
     }
