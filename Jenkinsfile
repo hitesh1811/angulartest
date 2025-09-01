@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_HOST = 'ubuntu@13.232.250.27'
+        EC2_HOST = 'ubuntu@3.110.94.223'
         SSH_KEY = 'ec2-key-angular'
         APP_DIR = '/var/www/angulartest'
         DIST_DIR = 'dist/to-do-list/browser' // or adjust if your build path is different
